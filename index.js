@@ -1,21 +1,25 @@
 #! /usr/bin/env node
 import inquirer from "inquirer";
+import chalk from "chalk";
+console.log(chalk.bold.yellowBright(`\n   <<<===================================>>>`));
+console.log(chalk.bold.redBright(`<<<==========>>>  ${chalk.redBright.bold('ATM MACHINE')}  <<<==========>>>`));
+console.log(chalk.bold.yellowBright(`   <<<===================================>>>\n`));
 let myBalance = 15000;
 let myPin = 9876;
 let pin_answer = await inquirer.prompt([
     {
         name: "Pin",
         type: "number",
-        message: "Enter your pin"
+        message: chalk.italic.bold("Enter your pin")
     },
 ]);
 if (pin_answer.Pin === 9876) {
-    console.log("Correct pin code!!");
+    console.log(chalk.green.bold("Correct pin code!!"));
     let transactionType = await inquirer.prompt([
         {
             name: "Transaction",
             type: "list",
-            message: "Please select Transaction",
+            message: chalk.italic.bold("Please select Transaction"),
             choices: ["with drawl", "check balance", "fast cash"]
         },
     ]);
@@ -28,14 +32,14 @@ if (pin_answer.Pin === 9876) {
             },
         ]);
         if (myBalance <= amount_ans.Amount) {
-            console.log(`"Sorry insufficient balance!!..Your current balance is ${myBalance}"`);
+            console.log(chalk.greenBright.bold(`"Sorry insufficient balance!!..Your current balance is ${myBalance}"`));
         }
         else if (myBalance -= amount_ans.Amount) {
-            console.log(`Your remaining balance is: ${myBalance}`);
+            console.log(chalk.redBright.bold(`Your remaining balance is: ${myBalance}`));
         }
     }
     else if (transactionType.Transaction === "check balance") {
-        console.log(`"Your total balance is ${myBalance}`);
+        console.log(chalk.yellowBright(`"Your total balance is ${myBalance}"`));
     }
     else if (transactionType.Transaction === "fast cash") {
         let accountType = await inquirer.prompt([
@@ -47,14 +51,14 @@ if (pin_answer.Pin === 9876) {
             }
         ]);
         if (myBalance <= accountType.fast) {
-            console.log(`"Your balance is insufficient!!...Your current balance is ${myBalance}"`);
+            console.log(chalk.greenBright.bold(`"Your balance is insufficient!!...Your current balance is ${myBalance}"`));
         }
         else {
             myBalance -= accountType.fast;
-            console.log(`"your remaining balance is: ${myBalance}"`);
+            console.log(chalk.bold.redBright(`"your remaining balance is: ${myBalance}"`));
         }
     }
     else {
-        console.log("Incorrect pin code!!");
+        console.log(chalk.red.bold("Incorrect pin code!!"));
     }
 }
